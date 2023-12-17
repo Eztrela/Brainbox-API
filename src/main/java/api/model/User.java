@@ -9,15 +9,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
-    private String password;
     private String email;
 
-    public User(String username, String password, String email) {
+    private String password;
+
+    public User(String username, String email, String password) {
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.password = password;
     }
     public User() {}
+
+    public void setId(Long id) { this.id = id; }
 
     public Long getId() {
         return id;
