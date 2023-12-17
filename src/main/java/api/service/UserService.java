@@ -6,6 +6,7 @@ import api.model.User;
 import api.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,14 +27,14 @@ public class UserService {
     }
 
     @Transactional
-    public User insert(User user) {
-        Optional<User> register = this.userRepository.findById(user.getId());
-        if (register.isPresent()) throw new InsertionError("User " + user.getId() + " already inserted!");
-        return this.userRepository.save(user);
+    public User replace(User user) {
+        User register = userRepository.findByUsername(user.getUsername());
+        if (register == null) throw new RuntimeException("User already registered!");
+        return userRepository.save(user);
     }
 
     @Transactional
-    public User update(User user, Long id) {
+    public User replace(User user, Long id) {
         return userRepository.findById(id)
                 .map(register -> {
                     register.setUsername(user.getUsername());
