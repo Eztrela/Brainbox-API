@@ -11,6 +11,7 @@ public class Memorybox {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique = true)
     private String title;
     private Date datetimeCreated;
     @OneToMany
@@ -69,13 +70,13 @@ public class Memorybox {
         return tags;
     }
 
-    public void adicionarTag(Tag tag){
+    public void addTag(Tag tag){
         this.tags.add(tag);
     }
-    public void adicionarTask(Task task){
+    public void addTask(Task task){
         this.tasks.add(task);
     }
-    public void adicionarNote(Note note){
+    public void addNote(Note note){
         this.notes.add(note);
     }
 
@@ -88,5 +89,32 @@ public class Memorybox {
     }
     public void removerNote(Note note){
         this.notes.remove(note);
+    }
+
+    public Note getNoteByID(Long id){
+        for(Note note: this.getNotes()){
+            if(note.getId().equals(id)){
+                return note;
+            }
+        }
+        return null;
+    }
+
+    public Task getTaskByID(Long id){
+        for(Task task: this.getTasks()){
+            if(task.getId().equals(id)){
+                return task;
+            }
+        }
+        return null;
+    }
+
+    public Tag getTagByID(Long id){
+        for(Tag tag: this.getTags()){
+            if(tag.getId().equals(id)){
+                return tag;
+            }
+        }
+        return null;
     }
 }
