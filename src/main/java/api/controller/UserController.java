@@ -37,7 +37,7 @@ public class UserController {
     @PostMapping
     public User insert(@RequestBody @Valid UserInsertDTO user) {
         User newUser = new User(user.username(), user.email(), user.password());
-        return this.userService.replace(newUser);
+        return this.userService.insert(newUser);
     }
 
     @PostMapping("/auth")
@@ -52,7 +52,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public User update(@RequestBody User user, @PathVariable("id") Long id) {
-        return this.userService.replace(user, id);
+        return this.userService.update(user, id);
     }
 
     @DeleteMapping("/{id}")

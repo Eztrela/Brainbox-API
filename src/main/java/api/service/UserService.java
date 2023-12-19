@@ -44,24 +44,20 @@ public class UserService {
     }
 
     @Transactional
-    public User replace(User user) {
+    public User insert(User user) {
         Optional<User> register = userRepository.findByUsername(user.getUsername());
         if (register.isPresent()) throw new RuntimeException("User already registered!");
         return userRepository.save(user);
     }
 
     @Transactional
-    public User replace(User user, Long id) {
+    public User update(User user, Long id) {
         return userRepository.findById(id)
                 .map(register -> {
                     register.setUsername(user.getUsername());
                     register.setEmail(user.getEmail());
                     return userRepository.save(register);
-                })
-                .orElseGet(() -> {
-                    user.setId(id);
-                    return userRepository.save(user);
-                });
+                }).orElseThrow(() -> new RuntimeException("User " + id + " not found!"));
     }
 
     @Transactional
