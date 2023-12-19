@@ -1,5 +1,6 @@
 package api.service;
 
+import api.dto.UserAuthDTO;
 import api.dto.UserListingDTO;
 import api.exception.InsertionError;
 import api.model.User;
@@ -26,10 +27,26 @@ public class UserService {
         return this.userRepository.findById(id).orElse(null);
     }
 
+    public User getByEmail(String email) {
+        return this.userRepository.findByEmail(email).orElse(null);
+    }
+
+    public boolean auth(String username, String password) {
+        Optional<User> register = userRepository.findByUsername(username);
+        if (!register.isPresent()) throw new RuntimeException("User " + username + " not found!");
+        return register.get().getPassword().equals(password);
+    }
+
+    public boolean validate(String username, String email) {
+        Optional<User> matchingUsername = userRepository.findByUsername(username);
+        Optional<User> matchingEmail = userRepository.findByEmail(email);
+        return matchingUsername.isEmpty() || matchingEmail.isEmpty();
+    }
+
     @Transactional
     public User replace(User user) {
-        User register = userRepository.findByUsername(user.getUsername());
-        if (register == null) throw new RuntimeException("User already registered!");
+        Optional<User> register = userRepository.findByUsername(user.getUsername());
+        if (register.isPresent()) throw new RuntimeException("User already registered!");
         return userRepository.save(user);
     }
 

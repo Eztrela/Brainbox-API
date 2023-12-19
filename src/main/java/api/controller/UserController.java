@@ -1,7 +1,9 @@
 package api.controller;
 
+import api.dto.UserAuthDTO;
 import api.dto.UserInsertDTO;
 import api.dto.UserListingDTO;
+import api.dto.UserValidateDTO;
 import api.model.User;
 import api.service.UserService;
 import jakarta.validation.Valid;
@@ -27,10 +29,25 @@ public class UserController {
         return this.userService.getById(id);
     }
 
+    @GetMapping("/email/{email}")
+    public User getUserByEmail(@PathVariable("email") String email) {
+        return this.userService.getByEmail(email);
+    }
+
     @PostMapping
     public User insert(@RequestBody @Valid UserInsertDTO user) {
         User newUser = new User(user.username(), user.email(), user.password());
         return this.userService.replace(newUser);
+    }
+
+    @PostMapping("/auth")
+    public boolean auth(@RequestBody @Valid UserAuthDTO user) {
+        return this.userService.auth(user.username(), user.password());
+    }
+
+    @PostMapping("/validate")
+    public boolean validate(@RequestBody @Valid UserValidateDTO user) {
+        return this.userService.validate(user.username(), user.email());
     }
 
     @PutMapping("/{id}")
