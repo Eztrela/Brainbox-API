@@ -3,7 +3,9 @@ package api.repository;
 import api.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    public Task findByTitle(String title);
+    public Optional<Task> findByTitle(String title);
 
 }
