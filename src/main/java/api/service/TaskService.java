@@ -23,7 +23,7 @@ public class TaskService {
     }
 
     @Transactional
-    public Task insert(Task task) {
+    public Task insert(TaskInsertDTO task) {
         Optional<Task> register = taskRepository.findByTitle(task.getTitle());
         if (register.isPresent()) throw new RuntimeException("Task already exists");
         return taskRepository.save(task);
