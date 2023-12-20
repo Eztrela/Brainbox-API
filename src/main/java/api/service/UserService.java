@@ -2,6 +2,7 @@ package api.service;
 
 import api.dto.UserAuthDTO;
 import api.dto.UserListingDTO;
+import api.dto.UserValidateReturnDTO;
 import api.exception.InsertionError;
 import api.model.User;
 import api.repository.UserRepository;
@@ -37,10 +38,10 @@ public class UserService {
         return register.get().getPassword().equals(password);
     }
 
-    public boolean validate(String username, String email) {
+    public UserValidateReturnDTO validate(String username, String email) {
         Optional<User> matchingUsername = userRepository.findByUsername(username);
         Optional<User> matchingEmail = userRepository.findByEmail(email);
-        return matchingUsername.isEmpty() || matchingEmail.isEmpty();
+        return new UserValidateReturnDTO(matchingUsername.isPresent(), matchingEmail.isPresent());
     }
 
     @Transactional

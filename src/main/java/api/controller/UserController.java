@@ -1,9 +1,6 @@
 package api.controller;
 
-import api.dto.UserAuthDTO;
-import api.dto.UserInsertDTO;
-import api.dto.UserListingDTO;
-import api.dto.UserValidateDTO;
+import api.dto.*;
 import api.model.User;
 import api.service.UserService;
 import jakarta.validation.Valid;
@@ -46,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/validate")
-    public boolean validate(@RequestBody @Valid UserValidateDTO user) {
+    public UserValidateReturnDTO validate(@RequestBody @Valid UserValidateDTO user) {
         return this.userService.validate(user.username(), user.email());
     }
 
