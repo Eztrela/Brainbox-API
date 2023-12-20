@@ -23,7 +23,7 @@ public class NoteService {
     }
 
     @Transactional
-    public Note insert(Note note){
+    public Note insert(NoteInsertDTO note){
         Optional<Note> register = noteRepository.findByContent(note.getContent());
         if (register.isPresent()) throw new RuntimeException("Note already exists");
         return noteRepository.save(note);
