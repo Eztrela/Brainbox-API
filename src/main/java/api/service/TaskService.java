@@ -30,8 +30,8 @@ public class TaskService {
     }
 
     @Transactional
-    public Task update(Task task) {
-        return taskRepository.findById(task.getId()).map(
+    public Task update(TaskInsertDTO task, Long id) {
+        return taskRepository.findById(id).map(
                 register -> {
                     register.setTitle(task.getTitle());
                     register.setDescription(task.getDescription());
