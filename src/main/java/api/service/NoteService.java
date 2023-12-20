@@ -30,13 +30,13 @@ public class NoteService {
     }
 
     @Transactional
-    public Note update(Note note){
-        return noteRepository..findById(note.getId()).map(
+    public Note update(NoteInsertDTO note, Long id){
+        return noteRepository.findById(id).map(
                 register -> {
                     register.setContent(note.getContent());
                     return noteRepository.save(register);
                 }
-        ).orElseThrow(() -> new RuntimeException("Note not found"));
+        ).orElseThrow(() -> new RuntimeException("Note "+id+" not found"));
     }
 
     public void delete(Long id){
