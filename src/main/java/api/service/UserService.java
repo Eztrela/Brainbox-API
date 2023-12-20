@@ -56,6 +56,7 @@ public class UserService {
                 .map(register -> {
                     register.setUsername(user.getUsername());
                     register.setEmail(user.getEmail());
+                    register.setPassword(user.getPassword());
                     return userRepository.save(register);
                 }).orElseThrow(() -> new RuntimeException("User " + id + " not found!"));
     }
