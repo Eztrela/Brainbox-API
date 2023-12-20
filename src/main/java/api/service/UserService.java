@@ -1,6 +1,7 @@
 package api.service;
 
 import api.dto.UserAuthDTO;
+import api.dto.UserInsertDTO;
 import api.dto.UserListingDTO;
 import api.dto.UserValidateReturnDTO;
 import api.exception.InsertionError;
@@ -52,12 +53,12 @@ public class UserService {
     }
 
     @Transactional
-    public User update(User user, Long id) {
+    public User update(UserInsertDTO user, Long id) {
         return userRepository.findById(id)
                 .map(register -> {
-                    register.setUsername(user.getUsername());
-                    register.setEmail(user.getEmail());
-                    register.setPassword(user.getPassword());
+                    register.setUsername(user.username());
+                    register.setEmail(user.email());
+                    register.setPassword(user.password());
                     return userRepository.save(register);
                 }).orElseThrow(() -> new RuntimeException("User " + id + " not found!"));
     }
