@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User update(@RequestBody User user, @PathVariable("id") Long id) {
+    public User update(@RequestBody @Valid UserInsertDTO user, @PathVariable("id") Long id) {
         return this.userService.update(user, id);
     }
 
