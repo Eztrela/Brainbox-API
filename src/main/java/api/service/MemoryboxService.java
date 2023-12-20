@@ -22,15 +22,15 @@ public class MemoryboxService {
     }
 
     @Transactional
-    public Memorybox insert(Memorybox memorybox){
+    public Memorybox insert(MemoryboxInsertDTO memorybox){
         Optional<Memorybox> register = memoryboxRepository.findByTitle(memorybox.getTitle());
         if(register.isPresent()) throw new RuntimeException("Memorybox already exists");
         return memoryboxRepository.save(memorybox);
     }
 
     @Transactional
-    public Memorybox update(Memorybox memorybox){
-        return memoryboxRepository.findById(memorybox.getId()).map(
+    public Memorybox update(MemoryboxInsertDTO memorybox, Long id){
+        return memoryboxRepository.findById(id).map(
                 register -> {
                     register.setTitle(memorybox.getTitle());
                     register.setBanner(memorybox.getBanner());
