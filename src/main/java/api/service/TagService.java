@@ -30,10 +30,11 @@ public class TagService {
     }
 
     @Transactional
-    public Tag update(Tag tag){
-        return tagRepository.findById(tag.getId()).map(
+    public Tag update(TagInsertDTO tag,Long id){
+        return tagRepository.findById(id).map(
                 register -> {
                     register.setContent(tag.getTitle());
+                    register.setColor(tag.getColor());
                     return tagRepository.save(register);
                 }
         ).orElseThrow(() -> new RuntimeException("Note not found"));
