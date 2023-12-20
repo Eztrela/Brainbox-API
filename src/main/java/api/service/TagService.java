@@ -23,7 +23,7 @@ public class TagService {
     }
 
     @Transactional
-    public Tag insert(Tag tag){
+    public Tag insert(TagInsertDTO tag){
         Optional<Tag> register = tagRepository.findByTitle(tag.getTitle());
         if (register.isPresent()) throw new RuntimeException("Tag already exists");
         return tagRepository.save(tag);
