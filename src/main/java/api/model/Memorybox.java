@@ -22,13 +22,14 @@ public class Memorybox {
     private List<Tag> tags;
     private String banner;
 
-    public Memorybox(String title, List<Task> tasks, List<Note> notes, List<Tag> tags, String banner) {
+    public Memorybox(String title, List<Task> tasks, List<Note> notes, List<Tag> tags, String banner, Date datetimeCreated ) {
         this.title = title;
         this.datetimeCreated = new Date();
         this.tasks = tasks;
         this.notes = notes;
         this.tags = tags;
         this.banner = banner;
+        this.datetimeCreated = new Date();
     }
 
     public Memorybox() {
