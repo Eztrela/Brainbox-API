@@ -16,23 +16,28 @@ public class TagController {
 
     @GetMapping
     public List<TagListingDTO> getAll(){
-        return tagService.getAll();
+        return this.tagService.getAll();
     }
 
     @GetMapping("/{id}")
     public Tag getTagById(@PathVariable("id") Long id){
-        return tagService.getTagById(id);
+        return this.tagService.getTagById(id);
     }
 
     @PostMapping
     public Tag insert(@RequestBody @Valid TagInsetDTO tag){
         Tag newTag = new Tag(tag.title, tag.color);
-        return tagService.insert(newTag);
+        return this.tagService.insert(newTag);
     }
 
     @PutMapping("/{id}")
     public Tag update(@PathVariable("id") Long id, @RequestBody Tag tag){
-        return tagService.update(id, tag);
+        return this.tagService.update(tag, id);
     }
 
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Long id){
+        this.tagService.delete(id);
+        return "Tag "+id+" deleted with success!";
+    }
 }
