@@ -29,7 +29,7 @@ public class Memorybox {
         this.notes = notes;
         this.tags = tags;
         this.banner = banner;
-        this.datetimeCreated = datetimeCreated;
+        this.datetimeCreated = new Date();
     }
 
     public Memorybox() {

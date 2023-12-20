@@ -26,7 +26,7 @@ public class MemoryboxController {
 
     @PostMapping
     public Memorybox insert(@RequestBody @Valid MemoryboxInsertDTO memorybox){
-        Memorybox newMemorybox = new Memorybox(memorybox.title,memorybox.tasks,memorybox.notes,memorybox.tags,memorybox.banner,memorybox.datetimeCreated);
+        Memorybox newMemorybox = new Memorybox(memorybox.title,memorybox.tasks,memorybox.notes,memorybox.tags,memorybox.banner);
         return this.memoryboxService.insert(newMemorybox);
     }
 
