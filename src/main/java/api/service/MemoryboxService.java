@@ -4,10 +4,8 @@ import api.dto.MemoryboxInsertDTO;
 import api.dto.MemoryboxListingDTO;
 import api.dto.MemoryboxUpdateDTO;
 import api.dto.UserIdDTO;
-import api.model.Memorybox;
-import api.model.User;
-import api.repository.MemoryboxRepository;
-import api.repository.UserRepository;
+import api.model.*;
+import api.repository.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,12 @@ public class MemoryboxService {
     private MemoryboxRepository memoryboxRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TagRepository tagRepository;
+    @Autowired
+    private TaskRepository taskRepository;
+    @Autowired
+    private NoteRepository noteRepository;
 
     public List<MemoryboxListingDTO> getAll(){
         return this.convertToDTOList(memoryboxRepository.findAll());
@@ -47,6 +51,24 @@ public class MemoryboxService {
     public Memorybox update(MemoryboxUpdateDTO memorybox, Long id){
         return memoryboxRepository.findById(id).map(
                 register -> {
+                    memorybox.tasks().forEach(task -> {
+                        if(task.getId() != null) {
+                            Optional<Task> taskRegister = this.taskRepository.findById(task.getId());
+                            if (taskRegister.isEmpty()) throw new RuntimeException("Task does not exists");
+                        }
+                    });
+                    memorybox.notes().forEach(note -> {
+                        if(note.getId() != null) {
+                            Optional<Note> noteRegister = this.noteRepository.findById(note.getId());
+                            if (noteRegister.isEmpty()) throw new RuntimeException("Note does not exists");
+                        }
+                    });
+                    memorybox.tags().forEach(tag -> {
+                        if(tag.getId() != null) {
+                            Optional<Tag> tagRegister = this.tagRepository.findById(tag.getId());
+                            if (tagRegister.isEmpty()) throw new RuntimeException("Tag does not exists");
+                        }
+                    });
                     register.setTitle(memorybox.title());
                     register.setBanner(memorybox.banner());
                     register.setTasks(memorybox.tasks());
