@@ -1,5 +1,6 @@
 package api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -22,7 +23,17 @@ public class Memorybox {
     @OneToMany
     private List<Tag> tags;
 
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @ManyToOne
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
     private String banner;
 
@@ -38,13 +49,14 @@ public class Memorybox {
         this.tags = tags;
     }
 
-    public Memorybox(String title, String banner) {
+    public Memorybox(String title, String banner, User user) {
         this.title = title;
         this.datetimeCreated = new Date();
         this.tasks = new ArrayList<Task>();
         this.notes = new ArrayList<Note>();
         this.tags = new ArrayList<Tag>();
         this.banner = banner;
+        this.user = user;
     }
 
     public Memorybox() {
@@ -85,52 +97,5 @@ public class Memorybox {
     public List<Tag> getTags() {
         return tags;
     }
-
-    public void addTag(Tag tag){
-        this.tags.add(tag);
-    }
-    public void addTask(Task task){
-        this.tasks.add(task);
-    }
-    public void addNote(Note note){
-        this.notes.add(note);
-    }
-
-    public void removerTag(Tag tag){
-        this.tags.remove(tag);
-    }
-
-    public void removerTask(Task task){
-        this.tasks.remove(task);
-    }
-    public void removerNote(Note note){
-        this.notes.remove(note);
-    }
-
-    public Note getNoteByID(Long id){
-        for(Note note: this.getNotes()){
-            if(note.getId().equals(id)){
-                return note;
-            }
-        }
-        return null;
-    }
-
-    public Task getTaskByID(Long id){
-        for(Task task: this.getTasks()){
-            if(task.getId().equals(id)){
-                return task;
-            }
-        }
-        return null;
-    }
-
-    public Tag getTagByID(Long id){
-        for(Tag tag: this.getTags()){
-            if(tag.getId().equals(id)){
-                return tag;
-            }
-        }
-        return null;
-    }
+    
 }

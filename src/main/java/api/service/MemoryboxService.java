@@ -5,7 +5,9 @@ import api.dto.MemoryboxListingDTO;
 import api.dto.MemoryboxUpdateDTO;
 import api.dto.UserIdDTO;
 import api.model.Memorybox;
+import api.model.User;
 import api.repository.MemoryboxRepository;
+import api.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 public class MemoryboxService {
     @Autowired
     private MemoryboxRepository memoryboxRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<MemoryboxListingDTO> getAll(){
         return this.convertToDTOList(memoryboxRepository.findAll());
@@ -33,7 +37,9 @@ public class MemoryboxService {
     public Memorybox insert(MemoryboxInsertDTO memorybox){
         Optional<Memorybox> register = memoryboxRepository.findByTitle(memorybox.title());
         if(register.isPresent()) throw new RuntimeException("Memorybox already exists");
-        Memorybox newMemorybox = new Memorybox(memorybox.title(), memorybox.banner());
+        Optional<User> userRegister = userRepository.findById(memorybox.userId());
+        if(userRegister.isEmpty()) throw new RuntimeException("Memorybox User does not exists");
+        Memorybox newMemorybox = new Memorybox(memorybox.title(), memorybox.banner(), userRegister.get());
         return memoryboxRepository.save(newMemorybox);
     }
 
