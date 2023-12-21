@@ -1,7 +1,9 @@
 package api.service;
 
 import api.dto.TaskInsertDTO;
+import api.model.Tag;
 import api.model.Task;
+import api.repository.TagRepository;
 import api.repository.TaskRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ public class TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     public List<Task> getAll() {
         return taskRepository.findAll().stream().toList();
@@ -28,7 +32,9 @@ public class TaskService {
     public Task insert(TaskInsertDTO task) {
         Optional<Task> register = taskRepository.findByTitle(task.title());
         if (register.isPresent()) throw new RuntimeException("Task already exists");
-        Task newTask = new Task(task.title(), task.description(), task.status(), task.datetimeDue(), task.priority(), task.tag());
+        Optional<Tag> tagRegister = tagRepository.findById(task.tag().getId());
+        if (tagRegister.isEmpty()) throw new RuntimeException("Task Tag already exists");
+        Task newTask = new Task(task.title(), task.description(), task.status(), task.datetimeDue(), task.priority(), tagRegister.get());
         return taskRepository.save(newTask);
     }
 

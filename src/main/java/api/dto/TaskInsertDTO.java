@@ -2,6 +2,7 @@ package api.dto;
 
 import api.model.Tag;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
@@ -11,9 +12,9 @@ public record TaskInsertDTO(
         @NotEmpty String description,
         @NotEmpty String status,
 
-        @NotEmpty Date datetimeDue,
+        @NotNull Date datetimeDue,
 
-        @NotEmpty Long priority,
-        @NotEmpty Tag tag
+        @NotNull Long priority,
+        @NotNull Tag tag
 ) {
 }
