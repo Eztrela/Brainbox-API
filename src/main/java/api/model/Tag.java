@@ -15,13 +15,10 @@ public class Tag {
     private String title;
     private String color;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE)
-    private List<Task> tasks;
 
     public Tag(String title, String color) {
         this.title = title;
         this.color = color;
-        this.tasks = new ArrayList<Task>();
     }
 
     public Tag() {}
@@ -55,12 +52,5 @@ public class Tag {
         return id;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
 }
 
