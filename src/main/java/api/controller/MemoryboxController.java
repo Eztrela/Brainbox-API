@@ -46,9 +46,8 @@ public class MemoryboxController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id){
+    public void delete(@PathVariable("id") Long id){
         this.memoryboxService.delete(id);
-        return "Memorybox "+id+" deleted with success!";
     }
 
 }

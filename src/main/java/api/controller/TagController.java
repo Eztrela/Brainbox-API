@@ -37,8 +37,7 @@ public class TagController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id){
+    public void delete(@PathVariable("id") Long id){
         this.tagService.delete(id);
-        return "Tag "+id+" deleted with success!";
     }
 }
