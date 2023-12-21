@@ -1,5 +1,6 @@
 package api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 
@@ -19,6 +20,7 @@ public class Task {
     private Date datetimeDue;
     private Long priority;
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Tag tag;
 
     public Task(String title, String description, String status, Date datetimeDue, Long priority, Tag tag) {

@@ -33,7 +33,7 @@ public class TaskService {
         Optional<Task> register = taskRepository.findByTitle(task.title());
         if (register.isPresent()) throw new RuntimeException("Task already exists");
         Optional<Tag> tagRegister = tagRepository.findById(task.tag().getId());
-        if (tagRegister.isEmpty()) throw new RuntimeException("Task Tag already exists");
+        if (tagRegister.isEmpty()) throw new RuntimeException("Task tag does not exist");
         Task newTask = new Task(task.title(), task.description(), task.status(), task.datetimeDue(), task.priority(), tagRegister.get());
         return taskRepository.save(newTask);
     }
