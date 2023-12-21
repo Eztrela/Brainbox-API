@@ -1,8 +1,8 @@
 package api.dto;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public record UserIdDTO(
-        @NotEmpty String id
+        @NotNull Long id
 ) {
 }

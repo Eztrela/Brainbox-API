@@ -36,7 +36,7 @@ public class MemoryboxController {
 
     @PostMapping("/user")
     public List<MemoryboxListingDTO> getAllByUserId(@RequestBody @Valid UserIdDTO userId){
-        Long id = Long.parseLong(userId.id());
+        Long id = userId.id();
         return this.memoryboxService.getAllByUserId(id);
     }
 

@@ -2,6 +2,9 @@ package api.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "tb_tag")
 public class Tag {
@@ -12,9 +15,13 @@ public class Tag {
     private String title;
     private String color;
 
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE)
+    private List<Task> tasks;
+
     public Tag(String title, String color) {
         this.title = title;
         this.color = color;
+        this.tasks = new ArrayList<Task>();
     }
 
     public Tag() {}
@@ -46,6 +53,14 @@ public class Tag {
 
     public Long getId() {
         return id;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }
 

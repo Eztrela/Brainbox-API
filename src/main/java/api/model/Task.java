@@ -19,7 +19,9 @@ public class Task {
     private Date datetimeCreated;
     private Date datetimeDue;
     private Long priority;
-    @ManyToOne()
+
+    @ManyToOne
+    @JoinColumn(name = "tag_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Tag tag;
 

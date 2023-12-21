@@ -16,11 +16,13 @@ public class Memorybox {
     @Column(unique = true)
     private String title;
     private Date datetimeCreated;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Task> tasks;
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Note> notes;
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Tag> tags;
 
 
