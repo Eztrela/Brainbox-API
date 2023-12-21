@@ -19,7 +19,7 @@ public class Task {
     private Date datetimeCreated;
     private Date datetimeDue;
     private Long priority;
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToOne()
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Tag tag;
 
