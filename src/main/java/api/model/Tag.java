@@ -2,6 +2,9 @@ package api.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "tb_tag")
 public class Tag {
@@ -11,6 +14,7 @@ public class Tag {
     private Long id;
     private String title;
     private String color;
+
 
     public Tag(String title, String color) {
         this.title = title;
@@ -47,5 +51,6 @@ public class Tag {
     public Long getId() {
         return id;
     }
+
 }
 

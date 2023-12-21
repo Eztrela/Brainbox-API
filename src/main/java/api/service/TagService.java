@@ -2,6 +2,7 @@ package api.service;
 
 import api.dto.TagInsertDTO;
 import api.model.Tag;
+import api.model.Task;
 import api.repository.TagRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

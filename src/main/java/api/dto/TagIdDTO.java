@@ -2,7 +2,7 @@ package api.dto;
 
 import jakarta.validation.constraints.NotNull;
 
-public record UserIdDTO(
+public record TagIdDTO(
         @NotNull Long id
 ) {
 }

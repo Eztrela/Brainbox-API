@@ -1,5 +1,6 @@
 package api.controller;
 
+import api.dto.TagIdDTO;
 import api.dto.TaskInsertDTO;
 import api.model.Task;
 import api.service.TaskService;
@@ -29,6 +30,11 @@ public class TaskController {
     @PostMapping
     public Task insert(@RequestBody @Valid TaskInsertDTO task){
         return this.taskService.insert(task);
+    }
+
+    @PostMapping("/tag")
+    public List<Task> getAllByTagId(@RequestBody @Valid TagIdDTO tagId) {
+        return this.taskService.getByTagId(tagId.id());
     }
 
     @PutMapping("/{id}")

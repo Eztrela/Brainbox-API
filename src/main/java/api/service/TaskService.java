@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -26,6 +27,12 @@ public class TaskService {
 
     public Task getById(Long id) {
         return taskRepository.findById(id).orElse(null);
+    }
+
+    public List<Task> getByTagId(Long tagId) {
+        return getAll().stream()
+                .filter(task -> task.getTag() != null && task.getTag().getId().equals(tagId))
+                .collect(Collectors.toList());
     }
 
     @Transactional
