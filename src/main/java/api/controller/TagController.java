@@ -1,6 +1,8 @@
 package api.controller;
 
+import api.dto.TagInsertDTO;
 import api.model.Tag;
+import api.service.TagService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +17,22 @@ public class TagController {
     private TagService tagService;
 
     @GetMapping
-    public List<TagListingDTO> getAll(){
+    public List<Tag> getAll(){
         return this.tagService.getAll();
     }
 
     @GetMapping("/{id}")
     public Tag getTagById(@PathVariable("id") Long id){
-        return this.tagService.getTagById(id);
+        return this.tagService.getById(id);
     }
 
     @PostMapping
-    public Tag insert(@RequestBody @Valid TagInsetDTO tag){
-        Tag newTag = new Tag(tag.title, tag.color);
-        return this.tagService.insert(newTag);
+    public Tag insert(@RequestBody @Valid TagInsertDTO tag){
+        return this.tagService.insert(tag);
     }
 
     @PutMapping("/{id}")
-    public Tag update(@PathVariable("id") Long id, @RequestBody Tag tag){
+    public Tag update(@PathVariable("id") Long id, @RequestBody @Valid TagInsertDTO tag){
         return this.tagService.update(tag, id);
     }
 

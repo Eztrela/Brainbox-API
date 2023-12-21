@@ -1,6 +1,8 @@
 package api.service;
 
+import api.dto.TagInsertDTO;
 import api.model.Tag;
+import api.repository.TagRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,7 @@ import java.util.Optional;
 public class TagService {
 
     @Autowired
-    private NoteRepository tagRepository;
+    private TagRepository tagRepository;
 
     public List<Tag> getAll(){
         return tagRepository.findAll().stream().toList();
@@ -24,17 +26,18 @@ public class TagService {
 
     @Transactional
     public Tag insert(TagInsertDTO tag){
-        Optional<Tag> register = tagRepository.findByTitle(tag.getTitle());
+        Optional<Tag> register = tagRepository.findByTitle(tag.title());
         if (register.isPresent()) throw new RuntimeException("Tag already exists");
-        return tagRepository.save(tag);
+        Tag newTag = new Tag(tag.title(), tag.color());
+        return tagRepository.save(newTag);
     }
 
     @Transactional
     public Tag update(TagInsertDTO tag,Long id){
         return tagRepository.findById(id).map(
                 register -> {
-                    register.setContent(tag.getTitle());
-                    register.setColor(tag.getColor());
+                    register.setTitle(tag.title());
+                    register.setColor(tag.color());
                     return tagRepository.save(register);
                 }
         ).orElseThrow(() -> new RuntimeException("Note not found"));
@@ -46,7 +49,4 @@ public class TagService {
         tagRepository.deleteById(id);
     }
 
-    public Tag findByContent(String title){
-        return tagRepository.findByContent(title).orelse(null);
-    }
 }

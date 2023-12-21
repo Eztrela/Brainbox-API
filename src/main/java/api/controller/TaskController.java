@@ -1,6 +1,8 @@
 package api.controller;
 
+import api.dto.TaskInsertDTO;
 import api.model.Task;
+import api.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,19 +17,18 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping
-    public List<TaskListingDTO> getAll(){
+    public List<Task> getAll(){
         return this.taskService.getAll();
     }
 
     @GetMapping("/{id}")
     public Task getTaskById(@PathVariable("id") Long id){
-        return this.taskService.getTaskById(id);
+        return this.taskService.getById(id);
     }
 
     @PostMapping
     public Task insert(@RequestBody @Valid TaskInsertDTO task){
-        Task newTask = new Task(task.title,task.description,task.status,task.datetimeCreated,task.datetimeDue,task.priority,task.tag);
-        return this.taskService.insert(newTask);
+        return this.taskService.insert(task);
     }
 
     @PutMapping("/{id}")

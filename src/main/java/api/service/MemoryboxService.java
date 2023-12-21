@@ -1,20 +1,28 @@
 package api.service;
 
+import api.dto.MemoryboxInsertDTO;
+import api.dto.MemoryboxListingDTO;
+import api.dto.MemoryboxUpdateDTO;
+import api.dto.UserIdDTO;
 import api.model.Memorybox;
+import api.repository.MemoryboxRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MemoryboxService {
     @Autowired
     private MemoryboxRepository memoryboxRepository;
 
-    public List<Memorybox> getAll(){
-        return memoryboxRepository.findAll().stream().toList();
+    public List<MemoryboxListingDTO> getAll(){
+        return this.convertToDTOList(memoryboxRepository.findAll());
     }
 
     public Memorybox getById(Long id){
@@ -23,23 +31,28 @@ public class MemoryboxService {
 
     @Transactional
     public Memorybox insert(MemoryboxInsertDTO memorybox){
-        Optional<Memorybox> register = memoryboxRepository.findByTitle(memorybox.getTitle());
+        Optional<Memorybox> register = memoryboxRepository.findByTitle(memorybox.title());
         if(register.isPresent()) throw new RuntimeException("Memorybox already exists");
-        return memoryboxRepository.save(memorybox);
+        Memorybox newMemorybox = new Memorybox(memorybox.title(), memorybox.banner());
+        return memoryboxRepository.save(newMemorybox);
     }
 
     @Transactional
-    public Memorybox update(MemoryboxInsertDTO memorybox, Long id){
+    public Memorybox update(MemoryboxUpdateDTO memorybox, Long id){
         return memoryboxRepository.findById(id).map(
                 register -> {
-                    register.setTitle(memorybox.getTitle());
-                    register.setBanner(memorybox.getBanner());
-                    register.setTasks(memorybox.getTasks());
-                    register.setNotes(memorybox.getNotes());
-                    register.setTags(memorybox.getTags());
+                    register.setTitle(memorybox.title());
+                    register.setBanner(memorybox.banner());
+                    register.setTasks(memorybox.tasks());
+                    register.setNotes(memorybox.notes());
+                    register.setTags(memorybox.tags());
                     return memoryboxRepository.save(register);
                 }
         ).orElseThrow(() -> new RuntimeException("Memorybox not found"));
+    }
+
+    public List<MemoryboxListingDTO> getAllByUserId(Long id){
+        return this.convertToDTOList(this.memoryboxRepository.getAllByUserId(id));
     }
 
     public void delete(Long id){
@@ -52,5 +65,23 @@ public class MemoryboxService {
         return memoryboxRepository.findByTitle(title).orElse(null);
     }
 
+
+    public List<MemoryboxListingDTO> convertToDTOList(List<Memorybox> memoryboxList) {
+        return memoryboxList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public MemoryboxListingDTO convertToDTO(Memorybox memorybox) {
+        return new MemoryboxListingDTO(
+                memorybox.getId(),
+                memorybox.getTitle(),
+                memorybox.getDatetimeCreated(),
+                memorybox.getTasks(),
+                memorybox.getNotes(),
+                memorybox.getTags(),
+                memorybox.getBanner()
+        );
+    }
 
 }

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
-    public Tag findByTitle(String title);
+    public Optional<Tag> findByTitle(String title);
 
-    public Optional<Tag> findByColor(String color);
 }

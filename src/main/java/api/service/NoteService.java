@@ -1,6 +1,8 @@
 package api.service;
 
+import api.dto.NoteInsertDTO;
 import api.model.Note;
+import api.repository.NoteRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,16 +26,17 @@ public class NoteService {
 
     @Transactional
     public Note insert(NoteInsertDTO note){
-        Optional<Note> register = noteRepository.findByContent(note.getContent());
+        Optional<Note> register = noteRepository.findByContent(note.content());
         if (register.isPresent()) throw new RuntimeException("Note already exists");
-        return noteRepository.save(note);
+        Note newNote = new Note(note.content());
+        return noteRepository.save(newNote);
     }
 
     @Transactional
     public Note update(NoteInsertDTO note, Long id){
         return noteRepository.findById(id).map(
                 register -> {
-                    register.setContent(note.getContent());
+                    register.setContent(note.content());
                     return noteRepository.save(register);
                 }
         ).orElseThrow(() -> new RuntimeException("Note "+id+" not found"));
@@ -43,10 +46,6 @@ public class NoteService {
         Optional<Note> register = noteRepository.findById(id);
         if (register.isEmpty()) throw new RuntimeException("Note " + id + " not found");
         noteRepository.deleteById(id);
-    }
-
-    public Note findByContent(String title){
-        return noteRepository.findByContent(title).orelse(null);
     }
 
 }

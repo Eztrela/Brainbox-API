@@ -1,6 +1,11 @@
 package api.controller;
 
+import api.dto.MemoryboxInsertDTO;
+import api.dto.MemoryboxListingDTO;
+import api.dto.MemoryboxUpdateDTO;
+import api.dto.UserIdDTO;
 import api.model.Memorybox;
+import api.service.MemoryboxService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +26,22 @@ public class MemoryboxController {
 
     @GetMapping("/{id}")
     public Memorybox getMemoryboxById(@PathVariable("id") Long id){
-        return this.memoryboxService.getMemoryboxById(id);
+        return this.memoryboxService.getById(id);
     }
 
     @PostMapping
     public Memorybox insert(@RequestBody @Valid MemoryboxInsertDTO memorybox){
-        Memorybox newMemorybox = new Memorybox(memorybox.title,memorybox.tasks,memorybox.notes,memorybox.tags,memorybox.banner);
-        return this.memoryboxService.insert(newMemorybox);
+        return this.memoryboxService.insert(memorybox);
+    }
+
+    @PostMapping("/user")
+    public List<MemoryboxListingDTO> getAllByUserId(@RequestBody @Valid UserIdDTO userId){
+        Long id = Long.parseLong(userId.id());
+        return this.memoryboxService.getAllByUserId(id);
     }
 
     @PutMapping("/{id}")
-    public Memorybox update(@RequestBody MemoryboxInsertDTO memorybox, @PathVariable("id") Long id){
+    public Memorybox update(@RequestBody MemoryboxUpdateDTO memorybox, @PathVariable("id") Long id){
         return this.memoryboxService.update(memorybox, id);
     }
 
@@ -40,4 +50,5 @@ public class MemoryboxController {
         this.memoryboxService.delete(id);
         return "Memorybox "+id+" deleted with success!";
     }
+
 }

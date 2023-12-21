@@ -1,6 +1,8 @@
 package api.service;
 
+import api.dto.TaskInsertDTO;
 import api.model.Task;
+import api.repository.TaskRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,21 +26,22 @@ public class TaskService {
 
     @Transactional
     public Task insert(TaskInsertDTO task) {
-        Optional<Task> register = taskRepository.findByTitle(task.getTitle());
+        Optional<Task> register = taskRepository.findByTitle(task.title());
         if (register.isPresent()) throw new RuntimeException("Task already exists");
-        return taskRepository.save(task);
+        Task newTask = new Task(task.title(), task.description(), task.status(), task.datetimeDue(), task.priority(), task.tag());
+        return taskRepository.save(newTask);
     }
 
     @Transactional
     public Task update(TaskInsertDTO task, Long id) {
         return taskRepository.findById(id).map(
                 register -> {
-                    register.setTitle(task.getTitle());
-                    register.setDescription(task.getDescription());
-                    register.setStatus(task.getStatus());
-                    register.setDatetimeDue(task.getDatetimeDue());
-                    register.setPriority(task.getPriority());
-                    register.setTag(task.getTag());
+                    register.setTitle(task.title());
+                    register.setDescription(task.description());
+                    register.setStatus(task.status());
+                    register.setDatetimeDue(task.datetimeDue());
+                    register.setPriority(task.priority());
+                    register.setTag(task.tag());
                     return taskRepository.save(register);
                 }
         ).orElseThrow(() -> new RuntimeException("Task not found"));
@@ -48,9 +51,5 @@ public class TaskService {
         Optional<Task> register = taskRepository.findById(id);
         if (register.isEmpty()) throw new RuntimeException("Task "+id+" not found");
         taskRepository.deleteById(id);
-    }
-
-    public Task findByTitle(String title){
-        return tagRepository.findByTitle(title).orElse(null);
     }
 }

@@ -2,6 +2,7 @@ package api.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,16 +21,30 @@ public class Memorybox {
     private List<Note> notes;
     @OneToMany
     private List<Tag> tags;
+
+    @ManyToOne
+    private User user;
     private String banner;
 
-    public Memorybox(String title, List<Task> tasks, List<Note> notes, List<Tag> tags, String banner, Date datetimeCreated ) {
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public Memorybox(String title, String banner) {
         this.title = title;
         this.datetimeCreated = new Date();
-        this.tasks = tasks;
-        this.notes = notes;
-        this.tags = tags;
+        this.tasks = new ArrayList<Task>();
+        this.notes = new ArrayList<Note>();
+        this.tags = new ArrayList<Tag>();
         this.banner = banner;
-        this.datetimeCreated = new Date();
     }
 
     public Memorybox() {

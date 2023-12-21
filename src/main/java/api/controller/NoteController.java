@@ -1,6 +1,8 @@
 package api.controller;
 
+import api.dto.NoteInsertDTO;
 import api.model.Note;
+import api.service.NoteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +17,22 @@ public class NoteController {
     private NoteService noteService;
 
     @GetMapping
-    public List<NoteListingDTO> getAll(){
+    public List<Note> getAll(){
         return this.noteService.getAll();
     }
 
     @GetMapping("/{id}")
     public Note getNoteById(@PathVariable("id") Long id){
-        return this.noteService.getNoteById(id);
+        return this.noteService.getById(id);
     }
 
     @PostMapping
     public Note insert(@RequestBody @Valid NoteInsertDTO note){
-        Note newNote = new Note(note.content);
-        return this.noteService.insert(newNote);
+        return this.noteService.insert(note);
     }
 
     @PutMapping("/{id}")
-    public Note update(@PathVariable("id") Long id, @RequestBody Note note){
+    public Note update(@PathVariable("id") Long id, @RequestBody @Valid NoteInsertDTO note){
         return this.noteService.update(note, id);
     }
 

@@ -21,11 +21,11 @@ public class Task {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private Tag tag;
 
-    public Task(String title, String description, String status, Date datetimeCreated, Date datetimeDue, Long priority, Tag tag) {
+    public Task(String title, String description, String status, Date datetimeDue, Long priority, Tag tag) {
         this.title = title;
         this.description = description;
         this.status = status;
-        this.datetimeCreated = datetimeCreated;
+        this.datetimeCreated = new Date();
         this.datetimeDue = datetimeDue;
         this.priority = priority;
         this.tag = tag;
